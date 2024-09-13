@@ -1,6 +1,20 @@
-const { select } = require('@inquirer/prompts')
+const { select, input } = require('@inquirer/prompts')
 
+let meta = {
+    value: 'Codar todo dia',
+    checked: false
+}
+let metas = [meta]
+const cadastrarMeta = async () => {
+    const meta = await input({ message: 'Insira uma meta:' })
 
+    if (meta.length == 0) {
+        console.log('A meta não pode ser em branco!');
+        return
+    }
+
+    metas.push({ value: meta, checked: false })
+}
 const start = async () => {
 
     while (true) {
@@ -37,7 +51,9 @@ const start = async () => {
 
         switch (opcao) {
             case 'cadastrar':
-                console.log('Cadastrando meta');
+                await cadastrarMeta();
+                console.log(metas);
+                
                 break;
             case 'listar':
                 console.log('Listando metas');
@@ -54,7 +70,7 @@ const start = async () => {
             case 'sair':
                 console.log('Saindo');
                 return
-                
+
         }
     }
 }
