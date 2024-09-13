@@ -24,14 +24,14 @@ const listarMetas = async () =>{
         instructions: false,
     })
 
+    metas.forEach((m) =>{
+        m.checked = false;
+    })
+
     if (respostas.length == 0) {
         console.log('Nenhuma meta selecionada.');
         return
     }
-
-    metas.forEach((m) =>{
-        m.checked = false;
-    })
 
     respostas.forEach((resposta) => {
         const meta = metas.find((m) => {
@@ -41,7 +41,22 @@ const listarMetas = async () =>{
     })
 }
 
+const metasRealizadas = async () =>{
+    const realizadas = metas.filter((m) =>{
+        return m.checked
+    })
 
+    if (realizadas.length == 0 ) {
+        console.log('Nenhuma meta realizada.');
+        return
+    }
+
+    await select({
+        message:'Metas realizadas',
+        choices:[...realizadas]
+    })
+    
+}
 const start = async () => {
 
     while (true) {
@@ -79,14 +94,13 @@ const start = async () => {
         switch (opcao) {
             case 'cadastrar':
                 await cadastrarMeta();
-                console.log(metas);
-                
+                // console.log(metas);
                 break;
             case 'listar':
                 await listarMetas();
                 break;
             case 'realizadas':
-                console.log('Metas Realizadas');
+                await metasRealizadas();
                 break;
             case 'abertas':
                 console.log('Metas abertas');
@@ -102,4 +116,4 @@ const start = async () => {
     }
 }
 
-start()
+start();
